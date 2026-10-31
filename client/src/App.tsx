@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import heroImg from './assets/hero.png';
-import reactLogo from './assets/react.svg';
-import viteLogo from './assets/vite.svg';
-import './App.css';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
+import { PortalLayout } from './components/portal/portal-layout';
+import { ForgotPasswordPage } from './pages/forgot-password-page';
+import { LoginPage } from './pages/login-page';
+import { InvoiceDetailPage } from './pages/portal/invoice-detail-page';
+import { InvoicesPage } from './pages/portal/invoices-page';
+import { OverviewPage } from './pages/portal/overview-page';
+import { ProfilePage } from './pages/portal/profile-page';
+import { SubscriptionDetailPage } from './pages/portal/subscription-detail-page';
+import { SubscriptionsPage } from './pages/portal/subscriptions-page';
+import { SignupPage } from './pages/signup-page';
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return (
     <>
       <section id="center">
@@ -98,5 +102,3 @@ function App() {
     </>
   );
 }
-
-export default App;

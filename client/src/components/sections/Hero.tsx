@@ -1,6 +1,6 @@
 import { ArrowDown } from 'lucide-react';
 import { Logo } from '@/components/logo';
-import { ParticleField } from '@/components/sections/ParticleField';
+import { WaveField } from '@/components/sections/WaveField';
 
 interface HeroProps {
   onExplorePlans: () => void;
@@ -9,8 +9,8 @@ interface HeroProps {
 export function Hero({ onExplorePlans }: HeroProps) {
   return (
     <section className="relative isolate flex min-h-[calc(100svh-3.5rem)] items-center justify-center overflow-hidden bg-white">
-      <ParticleField className="absolute inset-0 -z-10 h-full w-full" />
-      {/* Soft fade so particles thin out behind the logo and at the edges. */}
+      <WaveField className="absolute inset-0 -z-10 h-full w-full" />
+      {/* Soft fade so the waves thin out behind the logo. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.6)_35%,transparent_70%)]"

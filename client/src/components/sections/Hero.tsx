@@ -1,84 +1,43 @@
-import { ArrowDown, ArrowRight, ShieldCheck, Zap, Sliders } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ArrowDown } from 'lucide-react';
+import { Logo } from '@/components/logo';
+import { ParticleField } from '@/components/sections/ParticleField';
 
 interface HeroProps {
-  onExploreCatalog: () => void;
-  onOpenKnowMore: () => void;
+  onExplorePlans: () => void;
 }
 
-export function Hero({ onExploreCatalog, onOpenKnowMore }: HeroProps) {
+export function Hero({ onExplorePlans }: HeroProps) {
   return (
-    <section className="relative py-20 md:py-28 border-b border-neutral-200 bg-white">
-      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 text-center">
-        {/* Subtle Pill Eyebrow Badge per DESIGN.md */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-neutral-50 px-3.5 py-1 text-xs text-neutral-600 mb-6 shadow-xs select-none">
-          <span className="h-1.5 w-1.5 rounded-full bg-neutral-900 flex-shrink-0" />
-          <span className="font-medium">Brightloop Software Platform</span>
+    <section className="relative isolate flex min-h-[calc(100svh-3.5rem)] items-center justify-center overflow-hidden bg-white">
+      <ParticleField className="absolute inset-0 -z-10 h-full w-full" />
+      {/* Soft fade so particles thin out behind the logo and at the edges. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.6)_35%,transparent_70%)]"
+      />
+
+      <div className="mx-auto flex max-w-3xl flex-col items-center px-4 text-center sm:px-6">
+        <div className="hero-logo relative">
+          <div
+            aria-hidden
+            className="hero-glow absolute -inset-x-16 -inset-y-10 -z-10 rounded-full bg-neutral-200/60 blur-3xl"
+          />
+          <Logo className="h-16 sm:h-24 md:h-28" />
         </div>
 
-        {/* Display Hero Title: 36/40 weight 600 per DESIGN.md */}
-        <h1 className="text-[32px] sm:text-[36px] md:text-[44px] leading-[1.15] font-semibold tracking-tight text-neutral-900 max-w-3xl mx-auto">
-          Business software subscriptions, flexible billing, and modular add-ons in one place.
-        </h1>
-
-        {/* Customer-Centric Subheadline */}
-        <p className="mt-5 text-sm sm:text-base text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-          Subscribe to modular business applications with upfront, predictable pricing. Choose
-          monthly or yearly plans, attach enterprise connectors whenever your workflow needs them,
-          and scale seats with complete autonomy.
+        <p className="hero-rise mt-8 max-w-xl text-base leading-relaxed text-neutral-600 [--delay:250ms] sm:text-lg">
+          Software your team can start using today. Pick a plan, create your account, and manage
+          everything from one place.
         </p>
 
-        {/* Primary Action Buttons */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={onExploreCatalog}
-            className="w-full sm:w-auto gap-2"
-          >
-            <span>Explore Products & Plans</span>
-            <ArrowDown className="h-4 w-4" />
-          </Button>
-
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={onOpenKnowMore}
-            className="w-full sm:w-auto gap-2"
-          >
-            <span>How It Works</span>
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </div>
-
-        {/* Core Value Highlights */}
-        <div className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto text-left">
-          <div className="p-4 rounded-lg border border-neutral-200/80 bg-neutral-50/50">
-            <Sliders className="h-4 w-4 text-neutral-900 mb-2" />
-            <div className="text-xs font-semibold text-neutral-900">Modular Add-ons</div>
-            <div className="text-xs text-neutral-500 mt-1 leading-normal">
-              Attach connectors and specialized tools to your subscription anytime with zero
-              friction.
-            </div>
-          </div>
-
-          <div className="p-4 rounded-lg border border-neutral-200/80 bg-neutral-50/50">
-            <Zap className="h-4 w-4 text-neutral-900 mb-2" />
-            <div className="text-xs font-semibold text-neutral-900">Flexible Cadences</div>
-            <div className="text-xs text-neutral-500 mt-1 leading-normal">
-              Switch freely between monthly flexibility and discounted yearly commitments.
-            </div>
-          </div>
-
-          <div className="p-4 rounded-lg border border-neutral-200/80 bg-neutral-50/50">
-            <ShieldCheck className="h-4 w-4 text-neutral-900 mb-2" />
-            <div className="text-xs font-semibold text-neutral-900">Transparent Terms</div>
-            <div className="text-xs text-neutral-500 mt-1 leading-normal">
-              Upfront tax schedules, volume discount tiers, and clear renewal and cancellation
-              rules.
-            </div>
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={onExplorePlans}
+          className="hero-rise group mt-10 inline-flex cursor-pointer items-center gap-2 rounded-full bg-neutral-950 px-6 py-3 text-sm font-medium text-white shadow-[0_4px_12px_rgb(0_0_0/0.12)] transition-all duration-150 [--delay:450ms] hover:bg-neutral-800 hover:shadow-[0_12px_32px_rgb(0_0_0/0.16)] focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          Explore plans
+          <ArrowDown className="h-4 w-4 transition-transform duration-150 group-hover:translate-y-0.5" />
+        </button>
       </div>
     </section>
   );

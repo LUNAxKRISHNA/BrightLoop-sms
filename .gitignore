@@ -52,5 +52,4 @@ Thumbs.db
 .eslintcache
 
 # Docs
-docs/*.md
 CLAUDE.md

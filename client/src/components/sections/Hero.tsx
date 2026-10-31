@@ -1,6 +1,6 @@
 import { ArrowDown } from 'lucide-react';
 import { Logo } from '@/components/logo';
-import { WaveField } from '@/components/sections/WaveField';
+import { RippleField } from '@/components/sections/RippleField';
 
 interface HeroProps {
   onExplorePlans: () => void;
@@ -9,11 +9,11 @@ interface HeroProps {
 export function Hero({ onExplorePlans }: HeroProps) {
   return (
     <section className="relative isolate flex min-h-[calc(100svh-3.5rem)] items-center justify-center overflow-hidden bg-white">
-      <WaveField className="absolute inset-0 -z-10 h-full w-full" />
-      {/* Soft fade so the waves thin out behind the logo. */}
+      <RippleField className="absolute inset-0 -z-10 h-full w-full" />
+      {/* Soft fade so the ripple field thins out behind the logo. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.6)_35%,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.4)_30%,transparent_60%)]"
       />
 
       <div className="mx-auto flex max-w-3xl flex-col items-center px-4 text-center sm:px-6">

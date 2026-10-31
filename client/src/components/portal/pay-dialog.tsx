@@ -5,10 +5,10 @@ import {
   formatDate,
   formatMoney,
   invoiceTotal,
-  mockPayInvoice,
+  payInvoice,
   type PaymentMethod,
   type PortalInvoice,
-} from '../../lib/mock-portal';
+} from '../../lib/portal';
 import { cn } from '../../lib/utils';
 import { Button } from '../ui/button';
 
@@ -24,7 +24,7 @@ type PayDialogProps = {
   onPrint: (invoice: PortalInvoice) => void;
 };
 
-/** Mock checkout. Uses the native <dialog> for focus trapping and Escape. */
+/** Checkout dialog (no real gateway, PRD). Uses the native <dialog> for focus trapping and Escape. */
 export function PayDialog({ invoice, onClose, onPrint }: PayDialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const [method, setMethod] = useState<PaymentMethod>('UPI');
@@ -48,9 +48,14 @@ export function PayDialog({ invoice, onClose, onPrint }: PayDialogProps) {
   const pay = async () => {
     if (!invoice) return;
     setPaying(true);
-    await mockPayInvoice(invoice.id, method);
-    setPaying(false);
-    setPaid(invoice);
+    try {
+      await payInvoice(invoice.id, method);
+      setPaid(invoice);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Payment failed. Try again.');
+    } finally {
+      setPaying(false);
+    }
   };
 
   return (
@@ -67,7 +72,7 @@ export function PayDialog({ invoice, onClose, onPrint }: PayDialogProps) {
           <p className="mt-1 text-muted-foreground">
             {/* `paid` is the invoice as it was before paying, so balance is what was paid. */}
             {formatMoney(balance)} paid for <span className="font-mono">{shown.number}</span> via{' '}
-            {method}. This is a mock payment.
+            {method}.
           </p>
           <div className="mt-6 flex gap-2">
             <Button variant="secondary" onClick={onClose}>

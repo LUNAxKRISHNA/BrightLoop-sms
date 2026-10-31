@@ -9,7 +9,7 @@ import { PasswordInput } from '../components/auth/password-input';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { passwordRules, signupSchema, type SignupValues } from '../lib/auth-schemas';
-import { mockSignup } from '../lib/mock-auth';
+import { signup } from '../lib/auth';
 import { cn } from '../lib/utils';
 
 export function SignupPage() {
@@ -28,7 +28,7 @@ export function SignupPage() {
   const onSubmit = async (values: SignupValues) => {
     setFormError(null);
     try {
-      const user = await mockSignup(values);
+      const user = await signup(values);
       setCreatedFor(user.email);
     } catch (error) {
       setFormError(error instanceof Error ? error.message : 'Something went wrong. Try again.');
@@ -55,7 +55,7 @@ export function SignupPage() {
             </Link>
           }
         >
-          {createdFor} is ready to use. This is a mock signup, no account was saved.
+          {createdFor} is ready to use.
         </AuthSuccess>
       ) : (
         <>

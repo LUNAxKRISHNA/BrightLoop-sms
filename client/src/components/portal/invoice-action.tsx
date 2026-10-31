@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { type PortalInvoice } from '../../lib/mock-portal';
+import { type PortalInvoice } from '../../lib/portal';
 import { PayDialog } from './pay-dialog';
 
 /** Opens the printable invoice page, which prints itself on load. */

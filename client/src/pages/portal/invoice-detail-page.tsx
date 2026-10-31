@@ -16,7 +16,7 @@ import {
   invoiceTotal,
   isUnpaid,
   useInvoices,
-} from '../../lib/mock-portal';
+} from '../../lib/portal';
 
 /** Thin edge strip repeating the invoice number, like a security band on a bill. */
 function NumberStrip({ number }: { number: string }) {
@@ -32,7 +32,7 @@ function NumberStrip({ number }: { number: string }) {
 
 export function InvoiceDetailPage() {
   const { id = '' } = useParams();
-  useInvoices(); // re-render after a mock payment
+  useInvoices(); // re-render after a payment
   const inv = findInvoice(id);
   const back = { to: '/portal/invoices', label: 'All invoices' };
   const { openPay, dialog } = usePayFlow();

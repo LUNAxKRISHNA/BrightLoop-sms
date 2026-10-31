@@ -2,13 +2,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
-import { AuthHeader, AuthLayout, AuthSuccess, FormAlert } from '../components/auth/auth-layout';
+import { AuthHeader, AuthLayout, FormAlert } from '../components/auth/auth-layout';
 import { fieldAria, FormField } from '../components/auth/form-field';
 import { PasswordInput } from '../components/auth/password-input';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { loginSchema, type LoginValues } from '../lib/auth-schemas';
-import { mockLogin } from '../lib/mock-auth';
+import { login, signOut } from '../lib/auth';
 import { cn } from '../lib/utils';
 
 type Role = 'customer' | 'staff';
@@ -57,7 +57,6 @@ function RoleToggle({ value, onChange }: { value: Role; onChange: (role: Role) =
 export function LoginPage() {
   const [role, setRole] = useState<Role>('customer');
   const [formError, setFormError] = useState<string | null>(null);
-  const [signedInAs, setSignedInAs] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const {
@@ -69,12 +68,14 @@ export function LoginPage() {
   const onSubmit = async (values: LoginValues) => {
     setFormError(null);
     try {
-      const user = await mockLogin(values);
-      if (role === 'customer') {
-        navigate('/portal');
-        return;
+      const user = await login(values);
+      const isCustomer = user.role === 'CUSTOMER';
+      if (isCustomer !== (role === 'customer')) {
+        signOut();
+        throw new Error(isCustomer ? 'This is a customer account. Switch to Customer to sign in.' : 'This is a staff account. Switch to Staff to sign in.');
       }
-      setSignedInAs(user.email);
+      // Admin and staff share the admin area; staff only see the sections they were given.
+      navigate(isCustomer ? '/portal' : '/admin');
     } catch (error) {
       setFormError(error instanceof Error ? error.message : 'Something went wrong. Try again.');
     }
@@ -95,18 +96,6 @@ export function LoginPage() {
         )
       }
     >
-      {signedInAs ? (
-        <AuthSuccess
-          title="You're signed in"
-          action={
-            <Button variant="secondary" onClick={() => setSignedInAs(null)}>
-              Back to sign in
-            </Button>
-          }
-        >
-          Signed in as {signedInAs} ({role}). This is a mock login, no session was created.
-        </AuthSuccess>
-      ) : (
         <>
           <RoleToggle
             value={role}
@@ -166,7 +155,6 @@ export function LoginPage() {
             </Button>
           </form>
         </>
-      )}
     </AuthLayout>
   );
 }

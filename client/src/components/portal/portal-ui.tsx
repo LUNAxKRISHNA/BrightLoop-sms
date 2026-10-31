@@ -1,7 +1,7 @@
 import { ArrowLeft } from '@phosphor-icons/react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router';
-import { formatMoney, totals, type Line } from '../../lib/mock-portal';
+import { formatMoney, totals, type Line } from '../../lib/portal';
 import { cn } from '../../lib/utils';
 
 export function PageHeader({

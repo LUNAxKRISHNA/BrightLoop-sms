@@ -16,7 +16,7 @@ import {
   subscriptions,
   subscriptionTotal,
   type BillingPeriod,
-} from '../../lib/mock-portal';
+} from '../../lib/portal';
 import { cn } from '../../lib/utils';
 
 // Bklit charts. Grey by default; status colours only where the chart is about

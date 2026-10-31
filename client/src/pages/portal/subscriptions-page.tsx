@@ -9,7 +9,7 @@ import {
   subscriptions,
   subscriptionTotal,
   type PortalSubscription,
-} from '../../lib/mock-portal';
+} from '../../lib/portal';
 
 type Filter = 'all' | 'current' | 'ended';
 

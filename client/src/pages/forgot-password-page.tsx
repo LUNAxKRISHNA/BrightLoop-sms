@@ -8,7 +8,7 @@ import { fieldAria, FormField } from '../components/auth/form-field';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { forgotPasswordSchema, type ForgotPasswordValues } from '../lib/auth-schemas';
-import { mockForgotPassword } from '../lib/mock-auth';
+import { forgotPassword } from '../lib/auth';
 
 export function ForgotPasswordPage() {
   const [formError, setFormError] = useState<string | null>(null);
@@ -23,7 +23,7 @@ export function ForgotPasswordPage() {
   const onSubmit = async (values: ForgotPasswordValues) => {
     setFormError(null);
     try {
-      await mockForgotPassword(values);
+      await forgotPassword(values);
       setSentTo(values.email);
     } catch (error) {
       setFormError(error instanceof Error ? error.message : 'Something went wrong. Try again.');

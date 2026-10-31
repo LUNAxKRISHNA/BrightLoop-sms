@@ -7,7 +7,7 @@ import {
   formatMoney,
   invoiceTotal,
   useInvoices,
-} from '../../lib/mock-portal';
+} from '../../lib/portal';
 
 export function SubscriptionDetailPage() {
   const { id = '' } = useParams();

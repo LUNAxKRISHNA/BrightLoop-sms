@@ -27,3 +27,7 @@ Build one unified system that covers the full subscription lifecycle:
 - **Discounts:** discount rules applied automatically
 - **Payments:** payment recording and tracking of outstanding and overdue invoices
 - **Reporting:** a dashboard for active subscriptions, revenue and overdue invoices
+
+## Status
+
+🚧 Work in progress

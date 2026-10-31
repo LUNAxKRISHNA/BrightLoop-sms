@@ -5,7 +5,13 @@ import jwt from 'jsonwebtoken';
 import type { user_role } from '@prisma/client';
 import { prisma } from './db.js';
 
-export type AuthUser = { id: string; email: string; role: user_role };
+// customer_account_id is only set by the legacy pg routes (routes/*.routes.ts), which share req.user.
+export type AuthUser = {
+  id: string;
+  email: string;
+  role: user_role;
+  customer_account_id?: string | null;
+};
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -50,7 +56,9 @@ export function requireAuth(...roles: user_role[]) {
 export const auth = Router();
 
 auth.post('/login', async (req, res) => {
-  const email = String(req.body?.email ?? '').trim().toLowerCase();
+  const email = String(req.body?.email ?? '')
+    .trim()
+    .toLowerCase();
   const password = String(req.body?.password ?? '');
   const user = await prisma.users.findUnique({ where: { email } });
   if (!user || !(await bcrypt.compare(password, user.password_hash))) {
@@ -64,10 +72,13 @@ auth.post('/login', async (req, res) => {
 /** Customer self sign-up: a CUSTOMER user plus its customer account. */
 auth.post('/signup', async (req, res) => {
   const name = String(req.body?.name ?? '').trim();
-  const email = String(req.body?.email ?? '').trim().toLowerCase();
+  const email = String(req.body?.email ?? '')
+    .trim()
+    .toLowerCase();
   const password = String(req.body?.password ?? '');
   if (!name || !email) return res.status(400).json({ error: 'Enter your name and email.' });
-  if (!isStrongPassword(password)) return res.status(400).json({ error: 'Password does not meet all the rules.' });
+  if (!isStrongPassword(password))
+    return res.status(400).json({ error: 'Password does not meet all the rules.' });
   if (await prisma.users.findUnique({ where: { email } })) {
     return res.status(409).json({ error: 'An account with this email already exists.' });
   }
@@ -85,12 +96,17 @@ auth.post('/signup', async (req, res) => {
 
 /** Stores a reset token. Sending the email is not built yet, so the response is the same either way. */
 auth.post('/forgot-password', async (req, res) => {
-  const email = String(req.body?.email ?? '').trim().toLowerCase();
+  const email = String(req.body?.email ?? '')
+    .trim()
+    .toLowerCase();
   const user = await prisma.users.findUnique({ where: { email } });
   if (user) {
     await prisma.users.update({
       where: { id: user.id },
-      data: { reset_token: randomBytes(32).toString('hex'), reset_token_expires_at: new Date(Date.now() + 3_600_000) },
+      data: {
+        reset_token: randomBytes(32).toString('hex'),
+        reset_token_expires_at: new Date(Date.now() + 3_600_000),
+      },
     });
   }
   res.json({ ok: true });
@@ -105,6 +121,9 @@ auth.post('/change-password', requireAuth(), async (req, res) => {
   if (!isStrongPassword(String(newPassword ?? ''))) {
     return res.status(400).json({ error: 'Password does not meet all the rules.' });
   }
-  await prisma.users.update({ where: { id: user.id }, data: { password_hash: await hashPassword(newPassword) } });
+  await prisma.users.update({
+    where: { id: user.id },
+    data: { password_hash: await hashPassword(newPassword) },
+  });
   res.json({ ok: true });
 });

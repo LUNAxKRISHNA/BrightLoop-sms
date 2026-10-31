@@ -9,8 +9,53 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { loginSchema, type LoginValues } from '../lib/auth-schemas';
 import { mockLogin } from '../lib/mock-auth';
+import { cn } from '../lib/utils';
+
+type Role = 'customer' | 'staff';
+
+const roles: { value: Role; label: string }[] = [
+  { value: 'customer', label: 'Customer' },
+  { value: 'staff', label: 'Staff' },
+];
+
+function RoleToggle({ value, onChange }: { value: Role; onChange: (role: Role) => void }) {
+  return (
+    <div
+      role="radiogroup"
+      aria-label="Sign in as"
+      className="relative mx-auto grid w-48 grid-cols-2 rounded-full border border-border bg-surface p-0.5"
+    >
+      {/* Sliding black pill behind the selected option. */}
+      <span
+        aria-hidden
+        className={cn(
+          'absolute inset-y-0.5 left-0.5 w-[calc(50%-2px)] rounded-full bg-foreground shadow-sm transition-transform duration-200 ease-out',
+          value === 'staff' && 'translate-x-full',
+        )}
+      />
+      {roles.map((role) => (
+        <button
+          key={role.value}
+          type="button"
+          role="radio"
+          aria-checked={value === role.value}
+          onClick={() => onChange(role.value)}
+          className={cn(
+            'relative z-10 rounded-full py-1 text-xs font-medium transition-colors duration-200',
+            value === role.value
+              ? 'text-background'
+              : 'text-muted-foreground hover:text-foreground',
+          )}
+        >
+          {role.label}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export function LoginPage() {
+  const [role, setRole] = useState<Role>('customer');
   const [formError, setFormError] = useState<string | null>(null);
   const [signedInAs, setSignedInAs] = useState<string | null>(null);
 
@@ -33,12 +78,16 @@ export function LoginPage() {
   return (
     <AuthLayout
       footer={
-        <>
-          New to Brightloop?{' '}
-          <Link to="/signup" className="font-medium text-foreground hover:underline">
-            Create an account
-          </Link>
-        </>
+        role === 'customer' ? (
+          <>
+            New to Brightloop?{' '}
+            <Link to="/signup" className="font-medium text-foreground hover:underline">
+              Create an account
+            </Link>
+          </>
+        ) : (
+          'Staff accounts are created by an admin.'
+        )
       }
     >
       {signedInAs ? (
@@ -50,11 +99,27 @@ export function LoginPage() {
             </Button>
           }
         >
-          Signed in as {signedInAs}. This is a mock login, no session was created.
+          Signed in as {signedInAs} ({role}). This is a mock login, no session was created.
         </AuthSuccess>
       ) : (
         <>
-          <AuthHeader title="Sign in" description="Welcome back. Enter your details to continue." />
+          <RoleToggle
+            value={role}
+            onChange={(next) => {
+              setRole(next);
+              setFormError(null);
+            }}
+          />
+          <div className="mt-4">
+            <AuthHeader
+              title="Sign in"
+              description={
+                role === 'customer'
+                  ? 'Welcome back. Enter your details to continue.'
+                  : 'Sign in with your Brightloop staff account.'
+              }
+            />
+          </div>
           {formError && <FormAlert message={formError} />}
 
           <form onSubmit={handleSubmit(onSubmit)} noValidate className="mt-6 flex flex-col gap-4">

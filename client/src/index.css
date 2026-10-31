@@ -143,6 +143,68 @@ body {
   animation: hero-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0ms) both;
 }
 
+/* Landing hero: logo scales in and gently floats, glow breathes, copy rises in. */
+@keyframes hero-logo-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes hero-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-logo {
+  animation:
+    hero-logo-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both,
+    hero-float 6s ease-in-out 900ms infinite;
+}
+
+.hero-glow {
+  animation: hero-glow 6s ease-in-out infinite;
+}
+
+/* Stagger with a --delay custom property on the element. */
+.hero-rise {
+  animation: hero-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0ms) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

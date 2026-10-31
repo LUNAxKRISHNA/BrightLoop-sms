@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16.15-alpine
+    container_name: brightloop_pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: CHANGE_ME
+      POSTGRES_DB: brightloop_sms
+    ports:
+      - '0.0.0.0:5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    command: >
+      postgres -c listen_addresses='*'
+               -c max_connections=200
+
+volumes:
+  pgdata:

@@ -1,15 +1,17 @@
 import { CaretDown, SignOut, UserCircle } from '@phosphor-icons/react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
-import { customer } from '../../lib/mock-portal';
+import { signOut } from '../../lib/auth';
+import { customer, usePortalVersion } from '../../lib/portal';
 import { cn } from '../../lib/utils';
 
-const initials = customer.name
-  .split(' ')
-  .map((part) => part[0])
-  .join('');
-
 export function ProfileMenu() {
+  usePortalVersion();
+  const initials = customer.name
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -75,6 +77,7 @@ export function ProfileMenu() {
         </Link>
         <Link
           to="/login"
+          onClick={signOut}
           role="menuitem"
           tabIndex={open ? 0 : -1}
           className="flex w-full items-center gap-2 rounded-md px-3 py-2 transition-colors duration-150 hover:bg-muted"

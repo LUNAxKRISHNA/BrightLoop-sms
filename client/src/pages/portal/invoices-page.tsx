@@ -9,7 +9,7 @@ import {
   formatMoney,
   invoiceTotal,
   useInvoices,
-} from '../../lib/mock-portal';
+} from '../../lib/portal';
 import { cn } from '../../lib/utils';
 
 type Filter = 'all' | 'Outstanding' | 'Overdue' | 'Paid';

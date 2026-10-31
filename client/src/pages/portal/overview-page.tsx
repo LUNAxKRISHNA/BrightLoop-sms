@@ -15,7 +15,7 @@ import {
   subscriptions,
   subscriptionTotal,
   useInvoices,
-} from '../../lib/mock-portal';
+} from '../../lib/portal';
 import { cn } from '../../lib/utils';
 
 function SummaryItem({

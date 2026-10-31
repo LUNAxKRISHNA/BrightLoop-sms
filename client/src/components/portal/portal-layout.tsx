@@ -1,4 +1,6 @@
-import { Link, NavLink, Outlet } from 'react-router';
+import { useEffect, useState } from 'react';
+import { Link, Navigate, NavLink, Outlet } from 'react-router';
+import { loadPortal } from '../../lib/portal';
 import { cn } from '../../lib/utils';
 import { Logo } from '../logo';
 import { ProfileMenu } from './profile-menu';
@@ -10,6 +12,19 @@ const navItems = [
 ];
 
 export function PortalLayout() {
+  const [load, setLoad] = useState<'loading' | 'ready' | 'failed'>('loading');
+
+  useEffect(() => {
+    loadPortal()
+      .then(() => setLoad('ready'))
+      .catch(() => setLoad('failed'));
+  }, []);
+
+  if (load === 'failed') return <Navigate to="/login" replace />;
+  if (load === 'loading') {
+    return <div className="grid min-h-screen place-items-center text-muted-foreground">Loading…</div>;
+  }
+
   return (
     <div className="min-h-screen bg-surface print:bg-white">
       <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur print:hidden">

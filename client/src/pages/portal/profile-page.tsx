@@ -8,7 +8,8 @@ import { PasswordInput } from '../../components/auth/password-input';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { passwordRules } from '../../lib/auth-schemas';
-import { customer, formatDate, mockSaveProfile } from '../../lib/mock-portal';
+import { changePassword } from '../../lib/auth';
+import { customer, formatDate, saveProfile } from '../../lib/portal';
 import {
   billingSchema,
   changePasswordSchema,
@@ -94,9 +95,13 @@ function DetailsForm() {
   });
 
   const onSubmit = async (values: DetailsValues) => {
-    await mockSaveProfile(values);
-    reset(values);
-    setSaved(true);
+    try {
+      await saveProfile(values);
+      reset(values);
+      setSaved(true);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Something went wrong. Try again.');
+    }
   };
 
   return (
@@ -150,9 +155,13 @@ function BillingForm() {
   });
 
   const onSubmit = async (values: BillingValues) => {
-    await mockSaveProfile(values);
-    reset(values);
-    setSaved(true);
+    try {
+      await saveProfile(values);
+      reset(values);
+      setSaved(true);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Something went wrong. Try again.');
+    }
   };
 
   return (
@@ -224,7 +233,7 @@ function PasswordForm() {
   const onSubmit = async (values: ChangePasswordValues) => {
     setFormError(null);
     try {
-      await mockSaveProfile(values);
+      await changePassword(values);
       reset();
       setSaved(true);
     } catch (error) {

@@ -9,5 +9,10 @@
     "react/react-in-jsx-scope": "off",
     "import/no-unassigned-import": "off"
   },
-  "ignorePatterns": ["**/dist/**", "**/node_modules/**"]
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "client/src/components/charts/**",
+    "client/src/components/shimmering-text.tsx"
+  ]
 }

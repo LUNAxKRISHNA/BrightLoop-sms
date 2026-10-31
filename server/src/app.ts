@@ -1,32 +1,38 @@
 import cors from 'cors';
 import express from 'express';
-import { prisma } from './db.js';
-import { auth, requireAuth } from './auth.js';
-import { dashboard, me, portal, staff } from './insights.js';
-import { api } from './routes.js';
+import { authRouter } from './routes/auth.routes.js';
+import { taxesRouter } from './routes/taxes.routes.js';
+import { productsRouter } from './routes/products.routes.js';
+import { plansRouter } from './routes/plans.routes.js';
+import { discountsRouter } from './routes/discounts.routes.js';
+import { customersRouter } from './routes/customers.routes.js';
+import { quotationTemplatesRouter } from './routes/quotation-templates.routes.js';
+import { subscriptionsRouter } from './routes/subscriptions.routes.js';
+import { billingRouter } from './routes/billing.routes.js';
+import { invoicesRouter } from './routes/invoices.routes.js';
+import { paymentsRouter } from './routes/payments.routes.js';
+import { dashboardRouter } from './routes/dashboard.routes.js';
 
 export const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/health', async (_req, res) => {
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-    res.json({ status: 'ok', db: 'connected' });
-  } catch {
-    res.status(503).json({ status: 'error', db: 'unreachable' });
-  }
+// Health Check
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.use('/api/auth', auth);
-app.use('/api/me', requireAuth('ADMIN', 'STAFF'), me);
-app.use('/api/portal', requireAuth('CUSTOMER'), portal);
-app.use('/api/dashboard', requireAuth('ADMIN', 'STAFF'), dashboard);
-app.use('/api/staff', requireAuth('ADMIN', 'STAFF'), staff);
-app.use('/api', requireAuth('ADMIN', 'STAFF'), api);
-
-app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error(err);
-  res.status(500).json({ error: 'Something went wrong. Try again.' });
-});
+// Routes
+app.use('/api/auth', authRouter);
+app.use('/api/taxes', taxesRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/plans', plansRouter);
+app.use('/api/discounts', discountsRouter);
+app.use('/api/customers', customersRouter);
+app.use('/api/quotation-templates', quotationTemplatesRouter);
+app.use('/api/subscriptions', subscriptionsRouter);
+app.use('/api/billing', billingRouter);
+app.use('/api/invoices', invoicesRouter);
+app.use('/api/payments', paymentsRouter);
+app.use('/api/dashboard', dashboardRouter);

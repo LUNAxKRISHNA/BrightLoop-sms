@@ -1,41 +1,18 @@
-import { Navbar } from '@/components/navigation/Navbar';
-import { Hero } from '@/components/sections/Hero';
-import { ProductCatalog } from '@/components/sections/ProductCatalog';
-import { WorkflowArchitecture } from '@/components/sections/WorkflowArchitecture';
-import { Footer } from '@/components/sections/Footer';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
+import { ForgotPasswordPage } from './pages/forgot-password-page';
+import { LoginPage } from './pages/login-page';
+import { SignupPage } from './pages/signup-page';
 
-export function App() {
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
+export default function App() {
   return (
-    <div className="min-h-screen flex flex-col bg-white text-neutral-900 font-sans selection:bg-neutral-900 selection:text-white">
-      {/* Sticky Navigation Header */}
-      <Navbar onOpenKnowMore={() => scrollToSection('workflow')} />
-
-      {/* Main Content Area */}
-      <main className="flex-1">
-        {/* Customer-Centric Hero Section with Self-Service License Preview */}
-        <Hero
-          onExploreCatalog={() => scrollToSection('catalog')}
-          onOpenKnowMore={() => scrollToSection('workflow')}
-        />
-
-        {/* Interactive Product & Plan Cards Section */}
-        <ProductCatalog />
-
-        {/* "How It Works" — Customer Workflow & Capabilities Section */}
-        <WorkflowArchitecture />
-      </main>
-
-      {/* Public Storefront Footer */}
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        {/* Landing and explore pages come from the landing work; until then, send everything to login. */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;

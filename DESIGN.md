@@ -47,13 +47,13 @@ Each status has a dot, a soft background and a text color.
 | Confirmed   | blue   | static              |
 | Active      | green  | static              |
 | Paused      | yellow | static              |
-| Closed      | grey   | hollow (1.5px ring) |
-| Cancelled   | grey   | hollow (1.5px ring) |
+| Closed      | grey   | static, 60% opacity |
+| Cancelled   | grey   | static, 60% opacity |
 | Paid        | green  | static              |
 | Outstanding | yellow | static              |
 | Overdue     | red    | static              |
 
-Red is used only for Overdue (including the overdue metric value on the dashboard) and destructive actions (delete, cancel invoice).
+Red is used only for Overdue and destructive actions (delete, cancel invoice).
 
 ## Typography
 

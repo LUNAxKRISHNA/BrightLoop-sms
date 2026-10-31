@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { AuthHeader, AuthLayout, AuthSuccess, FormAlert } from '../components/auth/auth-layout';
 import { fieldAria, FormField } from '../components/auth/form-field';
 import { PasswordInput } from '../components/auth/password-input';
@@ -58,6 +58,7 @@ export function LoginPage() {
   const [role, setRole] = useState<Role>('customer');
   const [formError, setFormError] = useState<string | null>(null);
   const [signedInAs, setSignedInAs] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -69,6 +70,10 @@ export function LoginPage() {
     setFormError(null);
     try {
       const user = await mockLogin(values);
+      if (role === 'customer') {
+        navigate('/portal');
+        return;
+      }
       setSignedInAs(user.email);
     } catch (error) {
       setFormError(error instanceof Error ? error.message : 'Something went wrong. Try again.');
@@ -149,6 +154,7 @@ export function LoginPage() {
             >
               <PasswordInput
                 id="password"
+                placeholder="••••••••"
                 autoComplete="current-password"
                 {...fieldAria('password', errors.password?.message)}
                 {...register('password')}
